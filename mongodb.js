@@ -9,32 +9,27 @@ const { MongoClient, ObjectID } = require("mongodb");
 const connectionURL = "mongodb://127.0.0.1:27017";
 const databaseName = "task-manager";
 
-MongoClient.connect(connectionURL, {useNewUrlParser: true, useUnifiedTopology: true}, (error, client) => {
+const id = new ObjectID();
+console.log(id.getTimestamp());
+
+MongoClient.connect(
+  connectionURL,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  (error, client) => {
     if (error) {
-        return console.log('Unable to connect to database!');
+      return console.log("Unable to connect to database!");
     }
 
     const db = client.db(databaseName);
 
-    db.collection('task').insertMany([
-        {
-            description: 'Go to sleep',
-            completed: false,
-        },
-        {
-            description: 'Finish mongoDb tutorial',
-            completed: false,
-        },
-        {
-            description: 'Say goodbye to Paula',
-            completed: true,
-        },
-    ], (error, result) => {
+    db.collection('users').insertOne({
+        _id: id,
+        name: 'Vikram',
+        age: 33,
+    }, (error, result) => {
         if (error) {
-            return console.log('Failed to add tasks');
+            return console.log('error');
         }
-        console.log(result.ops);
     })
-
-
-});
+  }
+);
