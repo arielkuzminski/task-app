@@ -1,35 +1,13 @@
-// CRUD
+import { MongoClient } from 'mongodb';
 
-// const mongodb = require("mongodb");
-// const MongoClient = mongodb.MongoClient;
-// const ObjectID = mongodb.ObjectID;
+const connectionUrl = 'mongodb://127.0.0.1:27017';
+const databaseName = 'task-manager';
 
-const { MongoClient, ObjectID } = require("mongodb");
+const client = new MongoClient(connectionUrl, {useUnifiedTopology: true });
 
-const connectionURL = "mongodb://127.0.0.1:27017";
-const databaseName = "task-manager";
-
-const id = new ObjectID();
-console.log(id.getTimestamp());
-
-MongoClient.connect(
-  connectionURL,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  (error, client) => {
+client.connect((error)=> {
     if (error) {
-      return console.log("Unable to connect to database!");
+        console.log(error);
     }
-
     const db = client.db(databaseName);
-
-    db.collection('users').insertOne({
-        _id: id,
-        name: 'Vikram',
-        age: 33,
-    }, (error, result) => {
-        if (error) {
-            return console.log('error');
-        }
-    })
-  }
-);
+})
