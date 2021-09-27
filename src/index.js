@@ -1,39 +1,42 @@
 import express from 'express';
 import './db/mongoose.js';
-import {User} from "./models/user.js";
-import {Task} from "./models/task.js";
+import { User } from "./models/user.js";
+import { Task } from "./models/task.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.post('/users', (req, res) => {
+app.post('/users', async (req, res) => {
     const user = new User(req.body);
-    user.save().then(() => {
+    try {
+        await user.save();
         res.status(201).send(user);
-    }).catch((error) => {
+    } catch (error) {
         res.status(400).send(error);
-    });
+    }
 });
 
-app.get('/users', (req, res) => {
-    User.find({}).then((myUsers) => {
+app.get('/users', async (req, res) => {
+    try {
+        const myUsers = await User.find({});
         res.send(myUsers);
-    }).catch((error) => {
+    } catch (e) {
         res.status(500).send();
-    });
+    };
 });
 
-app.get('/users/:id', (req, res) => {
-    User.findById(req.params.id).then((user) => {
-        if(!user) {
+app.get('/users/:id', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
             res.status(404).send();
         }
         res.send(user);
-    }).catch(() => {
+    } catch (e) {
         res.status(500).send();
-    });
+    }
 });
 
 app.post('/tasks', (req, res) => {
