@@ -2,6 +2,7 @@ import express from 'express';
 import './db/mongoose.js';
 import userRouter from './routers/user.js';
 import taskRouter from './routers/task.js';
+import jwt from 'jsonwebtoken';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,15 +16,14 @@ app.listen(port, () => {
 });
 
 
-// const myFunction = async () => {
-//     const password = 'Red12345!';
-//     const hashedPassword = await bcrypt.hash(password, 8);
+const myFunction = async () => {
+    const token = jwt.sign({_id: 'abc123'}, 'thisismynewcourse', {
+        expiresIn: '7 days'
+    });
+    console.log(token);
 
-//     console.log(password);
-//     console.log(hashedPassword);
+    const data = jwt.verify(token, 'thisismynewcourse');
+    console.log(data);
+};
 
-//     const isMatch = await bcrypt.compare(password, hashedPassword);
-//     console.log(isMatch);
-// };
-
-// myFunction();
+myFunction();
