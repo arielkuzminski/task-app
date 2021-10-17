@@ -7,6 +7,10 @@ import jwt from 'jsonwebtoken';
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use((req, res, next) => {
+    res.status(503).send('Maintance, come back later');
+});
+
 app.use(express.json());
 app.use(userRouter);
 app.use(taskRouter);
