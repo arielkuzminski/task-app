@@ -10,6 +10,7 @@ const auth = async (req, res, next) => {
         if (!user) {
             throw new Error();
         }
+        req.token = bearerToken;
         req.user = user;
         next();
     } catch (e) {
